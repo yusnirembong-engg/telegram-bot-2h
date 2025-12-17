@@ -1,4 +1,4 @@
-# Telegram User API (Telethon) - Auto Kirim Pesan Aman (Tanpa Media)
+# Telegram User API (Telethon) - Auto Kirim Pesan Aman (Railway Scheduler)
 import os
 import random
 import asyncio
@@ -18,24 +18,25 @@ GROUP_IDS = [
     -1001662248944, -1001764400714, -1001684579817
 ]
 
-# ====== ROTASI PESAN ======
+# ====== ROTASI PESAN TEKS ======
 MESSAGES = [
     "🔥 GRATISAN LAGI DIBUKA 🔥\nYang nanya free? 👉 Sudah tersedia di BIO\nTanpa deposit\nLangsung klaim\nGas cek bio sekarang 💥",
     "🎁 INFO FREEBET HARI INI 🎁\nGratis tanpa deposit, langsung klaim di BIO!\nKesempatan terbatas ⚡",
     "⚡ PROMO GRATIS ⚡\nSudah ada di BIO, jangan sampai kelewatan\nLangsung klaim sekarang!"
 ]
 
-# ====== LOG ======
+# ====== LOG FILE ======
 LOG_FILE = "log_telegram.txt"
 
-# ====== DELAY ======
+# ====== DELAY RANDOM ======
 MIN_DELAY = 3
 MAX_DELAY = 10
 
-# ====== Gagal Counter ======
+# ====== GAGAL COUNTER ======
 failed_counter = {}  # key: group_id, value: jumlah gagal berturut-turut
 MAX_FAIL = 5        # skip permanen setelah 5 gagal
 
+# ====== FUNGSI KIRIM PESAN ======
 async def send_message(client, group_id, message):
     global failed_counter
 
@@ -75,11 +76,15 @@ async def send_message(client, group_id, message):
                 pass
         await asyncio.sleep(random.randint(MIN_DELAY, MAX_DELAY))
 
+# ====== MAIN FUNCTION ======
 async def main():
     async with TelegramClient(session_name, api_id, api_hash) as client:
+        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Mulai kirim pesan ke semua grup")
         for group_id in GROUP_IDS:
             message = random.choice(MESSAGES)
             await send_message(client, group_id, message)
+        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Selesai kirim pesan ke semua grup")
 
+# ====== ENTRY POINT ======
 if __name__ == "__main__":
     asyncio.run(main())
