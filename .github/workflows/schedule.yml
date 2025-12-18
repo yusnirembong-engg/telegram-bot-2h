@@ -1,0 +1,12 @@
+name: Telegram Bot Scheduler
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'  # setiap 2 jam
+
+jobs:
+  call-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Vercel API
+        run: curl -X GET https://telegram-bot-2h.vercel.app/
